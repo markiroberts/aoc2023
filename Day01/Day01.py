@@ -153,4 +153,4 @@ for numberrow in numbers:
         value = ( first * 10 ) + last
         total = total + value
 
-print ("Part b : Total with text digits:", total)
+print ("Part b : Total with 1-9 digits and text digits ('one'-'nine'):", total)
