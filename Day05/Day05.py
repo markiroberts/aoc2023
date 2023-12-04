@@ -118,7 +118,7 @@ cards = []
 for line in array:
 #    splitline = re.split(r'[(+*@)&=.#-/]', line)
 #    splitline = re.split( r'[(.=*$#+%/@)-]', line)
-    print (line)
+#    print (line)
     try:
         a, b = line.split(": ")[1].split(" | ")
     except:
@@ -146,7 +146,7 @@ for line in array:
                 points = 1
             else:
                 points = points * 2
-    print (line, ' => ', card, cardnumbers, mynumbers, matches, points)
+#    print (line, ' => ', card, cardnumbers, mynumbers, matches, points)
     inlist = 1
     won = 0
     newcard = [card,matches, points, inlist, won]
