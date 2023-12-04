@@ -119,13 +119,11 @@ for line in array:
 #    splitline = re.split(r'[(+*@)&=.#-/]', line)
 #    splitline = re.split( r'[(.=*$#+%/@)-]', line)
 #    print (line)
+    card = int(line.split(":",1)[0].split(" ",1)[1]  )
     try:
         a, b = line.split(": ")[1].split(" | ")
     except:
         print("error")
-    
-    line.replace(":","")
-    card = int(line.split(":",1)[0].split(" ",1)[1]  )
     cardnumbers = [int(x) for x in a.split()]
     mynumbers = [int(x) for x in b.split()]
 
