@@ -83,6 +83,9 @@ array = []
 
 # Loop through each line via file handler
 for line in file:
+  line = line.replace(":","")
+#  line = line.replace("|","")
+  line = line.replace("Card ","")
   array.append(line)
 
 width = len(array[0])
@@ -105,116 +108,78 @@ print("split_pattern: ", split_pattern)
 x = 0
 y = 0
 
+#Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
+#1 41 48 83 86 17  83 86  6 31 17  9 48 53
+#Card   1: 33 56 23 64 92 86 94  7 59 13 | 86 92 64 43 10 70 16 55 79 33 56  8  7 25 82 14 31 96 94 13 99 29 69 75 23
+
+totalpoints = 0
+cards = []
+
 for line in array:
 #    splitline = re.split(r'[(+*@)&=.#-/]', line)
 #    splitline = re.split( r'[(.=*$#+%/@)-]', line)
-    splitline = re.split(pattern=split_pattern, string=line)
+    line.replace(":","")
+#    print(line)
+#    splitline = re.split(pattern=split_pattern, string=line)
+    splitline = re.split(pattern=r'[ ]', string=line)
+    card = splitline[0]
+ 
+    digit = 0
+    card = -1
+    cardnumbers = []
+    mynumbers = []
+    mine = False
     for s in splitline:
+        if s == '|':
+            mine = True
         if s.isdigit():
-            x = line.find(s)
-            newline = line[:x] + "?" + line[x+1:]
-            if(len(s))>1:
-                newline = newline[:x+1] + "?" + newline[x+2:]
-            if(len(s))>2:
-                newline = newline[:x+2] + "?" + newline[x+3:]                
-            if(len(s))>3:
-                newline = newline[:x+3] + "?" + newline[x+4:]  
-            line = newline
-
-            numbers.append([s, x, y])
-        else:
-            if len(s) > 0:
-                print("not digit",s)
-    y = y + 1
-
-#print (numbers)
-total_numbers = 0
-numbers_with_symbols = []
-numbers_without_symbols = []
-if (width > height):
-    maxdimension = width
-else:
-    maxdimension = height
-
-gear1 = [[0 for x in range(maxdimension)] for y in range(maxdimension)]
-
-for number in numbers:
-    length = len(number[0])
-    number_value = int(number[0])
-
-    number_start_x = number[1]
-    number_start_y = number[2]
-    leftx = number_start_x - 1
-    rightx = number_start_x + length
+            digit = digit + 1
+            number = int(s)
+            if (digit == 1):
+                card = number
+            elif not mine:
+                cardnumbers.append(number)
+            elif mine:
+                mynumbers.append(number)
  
-    abovey = number_start_y - 1
-    belowy = number_start_y + 1
- 
-    number_edge = []
-    for x in range(leftx, rightx+1):
-        y = abovey
-        number_edge.append([x, y])
-    for x in range(leftx, rightx+1):
-        y = belowy
-        number_edge.append([x, y])
-    number_edge.append([leftx, number_start_y])
-    number_edge.append([rightx, number_start_y])
-
-    hasSymbolOnEdge = False
-    for edge in number_edge:
-        x = edge[0]
-        y = edge[1]
-        char = element(x, y)
-        if char:
-            if  char != '.' and not char.isdigit()  :  
-               hasSymbolOnEdge = True
-            if  char == '*' :  
-               newgear =int(number[0])
-               if gear1[x][y] == 0:
-                   gear1[x][y] = [newgear]
-               else:
-                   gear1[x][y].append(newgear)
-               hasGearOnEdge = True
-
-    if ( hasSymbolOnEdge ):  
-        numbers_with_symbols.append([number[0], number_start_x, number_start_y])
-        total_numbers = total_numbers + int(number[0])
-    else:
-        numbers_without_symbols.append([number[0], number_start_x, number_start_y])
-
-connected_gears = []
-connected_gear_list = []
-for gearrow in gear1:
-    for gearcol in gearrow:
-        if (gearcol != 0):
-            if len(gearcol) >= 2:
-                connected_gears.append(gearcol)
-                connected_gear_list.append(gearcol[0])
-                connected_gear_list.append(gearcol[1])
-
-#print("Numbers with symbols:", numbers_with_symbols )
-#print("Numbers without symbols:", numbers_without_symbols)
-#print("Gear1:", gear1)
-#print("Connected gears:", connected_gears)
-#print("connected_gear_list", connected_gear_list)
-print("3a Part Number Total:", total_numbers)
-total_gear_ratio = 0
-for gear in connected_gears:
-    total_gear_ratio = total_gear_ratio + (gear[0] * gear[1])
-print("3b Gear Ratio Total:", total_gear_ratio)
-
-for y in range(0, height):
-    line = ""
-    for x in range(0, width):
-        if element(x,y):
-            if(partofnumber_with_symbols(x,y)):
-                if(partofnumber_with_gears(x,y)):
-                    print (color.GREEN, element(x,y), sep='', end='' ) 
-                else:   
-                   print (color.RED, element(x,y), sep='', end='' )
-            elif(partofnumber_without_symbols(x,y)):
-                print (color.BOLD, element(x,y), sep='', end='' )
+    matches = 0
+    points = 0
+    for cardnumber in cardnumbers:
+        if cardnumber in mynumbers:
+            matches = matches + 1
+            if points == 0:
+                points = 1
             else:
-                print (color.END, element(x,y), sep='', end='' )
-    print("")
- 
+                points = points * 2
+#    print (line, ' => ', card, cardnumbers, mynumbers, matches, points)
+    inlist = 1
+    won = 0
+    newcard = [card,matches, points, inlist, won]
+    cards.append(newcard)
+ #   print(newcard)
+ #   print(cards)
+    digit = digit + 1
+    totalpoints = totalpoints + points
+
+print ("Part A: ", totalpoints)
+#print(cards)
+
+for newcard in cards:
+# newcard = [card,matches, points, inlist, won]    
+    cardnumber = newcard[0]
+    inlist = newcard[3]
+    won = newcard[4]
+    matches = newcard[1]
+    woncard = cardnumber
+    for winningcard in range(matches):
+        if woncard < len(cards):
+            cards[woncard][4] = cards[woncard][4] + ( inlist + won )
+        woncard = woncard + 1
+
+totalscratchcards  = 0
+for newcard in cards:
+    inlist = newcard[3]
+    won = newcard[4]
+    totalscratchcards = totalscratchcards + inlist + won
+
+print ("Part B: ", totalscratchcards)
