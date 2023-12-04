@@ -83,9 +83,9 @@ array = []
 
 # Loop through each line via file handler
 for line in file:
-  line = line.replace(":","")
+#  line = line.replace(":","")
 #  line = line.replace("|","")
-  line = line.replace("Card ","")
+#  line = line.replace("Card ","")
   array.append(line)
 
 width = len(array[0])
@@ -118,29 +118,24 @@ cards = []
 for line in array:
 #    splitline = re.split(r'[(+*@)&=.#-/]', line)
 #    splitline = re.split( r'[(.=*$#+%/@)-]', line)
+    print (line)
+    try:
+        a, b = line.split(": ")[1].split(" | ")
+    except:
+        print("error")
+    
     line.replace(":","")
-#    print(line)
-#    splitline = re.split(pattern=split_pattern, string=line)
-    splitline = re.split(pattern=r'[ ]', string=line)
-    card = splitline[0]
- 
-    digit = 0
-    card = -1
+    card = int(line.split(":",1)[0].split(" ",1)[1]  )
     cardnumbers = []
+    for x in a.split(" "):
+        if x.isdigit():
+            cardnumbers.append(int(x))
     mynumbers = []
-    mine = False
-    for s in splitline:
-        if s == '|':
-            mine = True
-        if s.isdigit():
-            digit = digit + 1
-            number = int(s)
-            if (digit == 1):
-                card = number
-            elif not mine:
-                cardnumbers.append(number)
-            elif mine:
-                mynumbers.append(number)
+    for x in b.split(" "):
+        if x.isdigit():
+            mynumbers.append(int(x))
+
+ #   print(line, " > ", card, cardnumbers, mynumbers)
  
     matches = 0
     points = 0
@@ -151,14 +146,11 @@ for line in array:
                 points = 1
             else:
                 points = points * 2
-#    print (line, ' => ', card, cardnumbers, mynumbers, matches, points)
+    print (line, ' => ', card, cardnumbers, mynumbers, matches, points)
     inlist = 1
     won = 0
     newcard = [card,matches, points, inlist, won]
     cards.append(newcard)
- #   print(newcard)
- #   print(cards)
-    digit = digit + 1
     totalpoints = totalpoints + points
 
 print ("Part A: ", totalpoints)
