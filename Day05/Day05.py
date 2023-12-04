@@ -126,14 +126,8 @@ for line in array:
     
     line.replace(":","")
     card = int(line.split(":",1)[0].split(" ",1)[1]  )
-    cardnumbers = []
-    for x in a.split(" "):
-        if x.isdigit():
-            cardnumbers.append(int(x))
-    mynumbers = []
-    for x in b.split(" "):
-        if x.isdigit():
-            mynumbers.append(int(x))
+    cardnumbers = [int(x) for x in a.split()]
+    mynumbers = [int(x) for x in b.split()]
 
  #   print(line, " > ", card, cardnumbers, mynumbers)
  
