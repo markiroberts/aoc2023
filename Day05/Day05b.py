@@ -47,19 +47,18 @@ def find_mapping(mapping_from, mapping_to, source):
         
 def addseedproperty(sourceseed, mapping_to, destination):
 #    print("addseedproperty", source, mapping_to, destination)
-    item = [mapping_to, destination]
-    for seed in seedlist:
-        if seed[0] == sourceseed:
-            seed.append(item)
+#    item = [mapping_to, destination]
+#   item = [destination]
+    index = seedlist.index(sourceseed)
+    mapping_index = seedpropertylist.index(mapping_to)
+    seedlist[index][mapping_index+1] = destination
 
 def getseedproperty(sourceseed, mapping_to):
 #    print("addseedproperty", source, mapping_to, destination)
 #    item = [mapping_to, destination]
-    for seed in seedlist:
-        if seed[0] == sourceseed:
-            for seedproperty in seed[1:]:
-                if seedproperty[0] == mapping_to:
-                    return seedproperty[1]
+    index = seedlist.index(sourceseed)
+    mapping_index = seedpropertylist.index(mapping_to)
+    return seedlist[index][mapping_index+1]
 
 
 # Get the file handler
@@ -83,6 +82,12 @@ for line in file:
 
 height = len(array)
 
+mappings = 0
+for line in file:
+  if ':' in line:
+    mappings = mappings + 1
+
+print("mappings: ", mappings)
 numbers = []
 unique_chars = ""
 
@@ -129,6 +134,7 @@ mapping_digits = []
 mappinglist = []
 maplist = []
 seedlist = []
+seedpropertylist = []
 
 for line in array:
 #    splitline = re.split(r'[(+*@)&=.#-/]', line)
@@ -158,17 +164,26 @@ for line in array:
             mapping_from = mapping.split("-to-",1)[0].strip()
             mapping_to = mapping.split("-to-",1)[1].strip()
 
-    print(mapping, mapping_from, ' > ', mapping_to, mapping_digits)
+#    print(mapping, mapping_from, ' > ', mapping_to, mapping_digits)
     if mapping_to == "":
 # list of seeds
         if mapping_from == 'seeds':
+            digit = 0
             for x in mapping_digits:
-                item = [x, ['seed', x]]
-                seedlist.append(item)
+                if digit % 2 == 0:
+                    seed = x
+                else:
+#                    for offset in range(x):
+#                        item = [seed+offset, ['seed', seed+offset]]
+#                        item = [seed+offset]
+                     item = [[seed+offset,0,0,0,0,0,0,0] for offset in range(x)] 
+                     seedlist.extend(item)
+                digit = digit + 1
     elif len(mapping_digits) == 0:
-        print("leave default empty no mapping for x return x")
+#        print("leave default empty no mapping for x return x")
         maplist.append([mapping, mapping_from, mapping_to])
         mappinglist.append([mapping, mapping_from, mapping_to])
+        seedpropertylist.append(mapping_to)
 #        for x in range(100):
 #            item = [mapping_from, mapping_to, x, x]
 #            maplist.append(item)
@@ -181,9 +196,9 @@ for line in array:
 #        maplist['from','to',digit_from,digit_to]
 
 print("Output")
-print ("seedlist ",seedlist) 
+#print ("seedlist ",seedlist) 
 print ("mappinglist", mappinglist)
-print ("maplist  ",maplist)
+#print ("maplist  ",maplist)
 
 for processmapping in mappinglist:
 #        maplist['from','to',digit_from,digit_to]    
@@ -192,31 +207,27 @@ for processmapping in mappinglist:
     print ("Processing:", processmapping[0])
     if ( mapping_from == 'seed' ):
         for seed in seedlist:
-            sourceseed = seed[0]
-            source = sourceseed
+            sourceseed = seed
+            source = sourceseed[0]
             destination = find_mapping(mapping_from, mapping_to, source)
-            print(mapping_from, source, ' ==> ', mapping_to, destination)
+#            print(mapping_from, source, ' ==> ', mapping_to, destination)
             addseedproperty(sourceseed, mapping_to, destination)
 
     else:
         for seed in seedlist:
-            sourceseed = seed[0]
+            sourceseed = seed
             source = getseedproperty(sourceseed, mapping_from)
             destination = find_mapping(mapping_from, mapping_to, source)
-            print(mapping_from, source, ' ==>\t ', mapping_to, "\t", destination)
+#           print(mapping_from, source, ' ==>\t ', mapping_to, "\t", destination)
             addseedproperty(sourceseed, mapping_to, destination)
 
-print ("seedlist ",seedlist) 
+#print ("seedlist ",seedlist) 
 lowestlocation = 99999999999999
 for seed in seedlist:
-    sourceseed = seed[0]
+    sourceseed = seed
     mapping_from = 'location'
     property = getseedproperty(sourceseed, mapping_from)
-    print(sourceseed, 'location:\t', property)
-    if property != sourceseed:
-        print("***")
-    
-    print(sourceseed, 'location:\t', property)
+#   print(sourceseed, 'location:\t', property)
     if (property < lowestlocation):
         lowestlocation = property
 print("Lowest location:\t", lowestlocation)

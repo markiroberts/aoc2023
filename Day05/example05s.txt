@@ -1,3 +1,4 @@
+#destination range start / source range start / range length
 seeds: 79 14 55 13
 
 seed-to-soil map:
