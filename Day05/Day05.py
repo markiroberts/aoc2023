@@ -63,8 +63,8 @@ def getseedproperty(sourceseed, mapping_to):
 
 
 # Get the file handler
-#filename = './Day05/example05s.txt'
-filename = './Day05/day05.txt'
+filename = './Day05/example05s.txt'
+#filename = './Day05/day05.txt'
 #filename = './Day05/another.txt'
 
 file = open(filename,'r').read().split('\n')

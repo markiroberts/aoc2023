@@ -1,0 +1,8 @@
+Time:        63789468
+Distance:   411127420471035
+#The first race lasts 7 milliseconds. The record distance in this race is 9 millimeters.
+#Your toy boat has a starting speed of zero millimeters per millisecond. 
+#For each whole millisecond you spend at the beginning of the race holding down the button, 
+#the boat's speed increases by one millimeter per millisecond.
+#Hold the button for 2 milliseconds, giving the boat a speed of 2 millimeters 
+#per millisecond. It will then get 5 milliseconds to move, reaching a total distance of 10 millimeters

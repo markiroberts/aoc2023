@@ -62,8 +62,8 @@ def getseedproperty(sourceseed, mapping_to):
 
 
 # Get the file handler
-#filename = './Day05/example05s.txt'
-filename = './Day05/day05.txt'
+filename = './Day05/example05l.txt'
+#filename = './Day05/day05.txt'
 #filename = './Day05/another.txt'
 
 file = open(filename,'r').read().split('\n')
@@ -139,7 +139,7 @@ seedpropertylist = []
 for line in array:
 #    splitline = re.split(r'[(+*@)&=.#-/]', line)
 #    splitline = re.split( r'[(.=*$#+%/@)-]', line)
-#    print (line)
+    print (line)
     mapping_digits = []
     if line == '':
         mapping = ''
@@ -176,7 +176,9 @@ for line in array:
 #                    for offset in range(x):
 #                        item = [seed+offset, ['seed', seed+offset]]
 #                        item = [seed+offset]
+                     print("Creating :", seed, x)
                      item = [[seed+offset,0,0,0,0,0,0,0] for offset in range(x)] 
+                     print("Created  :", seed, x)
                      seedlist.extend(item)
                 digit = digit + 1
     elif len(mapping_digits) == 0:
@@ -227,7 +229,7 @@ for seed in seedlist:
     sourceseed = seed
     mapping_from = 'location'
     property = getseedproperty(sourceseed, mapping_from)
-#   print(sourceseed, 'location:\t', property)
+    print(sourceseed, 'location:\t', property)
     if (property < lowestlocation):
         lowestlocation = property
 print("Lowest location:\t", lowestlocation)
