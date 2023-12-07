@@ -53,16 +53,17 @@ def addseedproperty(sourceseed, mapping_to, destination):
     mapping_index = seedpropertylist.index(mapping_to)
     seedlist[index][mapping_index+1] = destination
 
-def getseedproperty(sourceseed, mapping_to):
+#def getseedproperty(sourceseed, mapping_to):
+#    for seed in seedlist:
 #    print("addseedproperty", source, mapping_to, destination)
 #    item = [mapping_to, destination]
-    index = seedlist.index(sourceseed)
-    mapping_index = seedpropertylist.index(mapping_to)
-    return seedlist[index][mapping_index+1]
+#    index = seedlist.index(sourceseed)
+#    mapping_index = seedpropertylist.index(mapping_to)
+#    return seedlist[index][mapping_index+1]
 
 
 # Get the file handler
-filename = './Day05/example05l.txt'
+filename = './Day05/example05.txt'
 #filename = './Day05/day05.txt'
 #filename = './Day05/another.txt'
 
@@ -177,9 +178,9 @@ for line in array:
 #                        item = [seed+offset, ['seed', seed+offset]]
 #                        item = [seed+offset]
                      print("Creating :", seed, x)
-                     item = [[seed+offset,0,0,0,0,0,0,0] for offset in range(x)] 
-                     print("Created  :", seed, x)
-                     seedlist.extend(item)
+                     item = ['seed',seed,'seed',seed,x]
+                     print("Created  Item:", item)
+                     seedlist.append(item)
                 digit = digit + 1
     elif len(mapping_digits) == 0:
 #        print("leave default empty no mapping for x return x")
@@ -202,36 +203,94 @@ print("Output")
 print ("mappinglist", mappinglist)
 #print ("maplist  ",maplist)
 
-for processmapping in mappinglist:
-#        maplist['from','to',digit_from,digit_to]    
-    mapping_from = processmapping[1]
-    mapping_to = processmapping[2]
-    print ("Processing:", processmapping[0])
-    if ( mapping_from == 'seed' ):
-        for seed in seedlist:
-            sourceseed = seed
-            source = sourceseed[0]
-            destination = find_mapping(mapping_from, mapping_to, source)
-#            print(mapping_from, source, ' ==> ', mapping_to, destination)
-            addseedproperty(sourceseed, mapping_to, destination)
+for processmapping in maplist:
+    newseed = []
+#        maplist['from','to',digit_from,digit_to,[mapping],[mapping]]    
+    mapping_from_to, mapping_from, mapping_to = processmapping[:3]
+    thismappings = processmapping[3:]
+    print ("Processing:", mapping_from_to)
+# seed = ['seed',79,'seed',79,14]
+    seedlist_index = 0
+    for seed in seedlist:
+        source_property, source_from, target_property, target_from, range = seed
+        source_to = source_from + range - 1
+        target_to = target_from + range - 1
+# if no overlap do nothing, at end make 1:1 mapping to target property
+        if ( mapping_from == target_property ):
+            for onemapping in thismappings:
+                print ("one mapping: ", onemapping, seed )
+                if seed:
+                    mapping_source_from, mapping_target_from, mapping_range = onemapping
+                    mapping_source_to = mapping_source_from + mapping_range - 1
+                    mapping_target_to = mapping_target_from + mapping_range - 1
+                    print("mapping  : ", mapping_source_from, " - ", mapping_source_to, " maps to ", mapping_target_from, " - ", mapping_target_to, " range ", mapping_range)
+                    print("property : ", target_from, " - ", target_to, " range ", range)
+                    if mapping_source_to < target_from:
+                        print("out of range - mapping below target")
+                    if mapping_source_from > target_to:
+                        print("out of range - mapping above target")
+                    elif mapping_source_to >= target_from and mapping_source_to <= target_to:
+                        print("some overlap 1")
+                    elif mapping_source_to >= target_from and mapping_source_from <= target_to:
+                        if target_from > mapping_source_from and target_to < mapping_source_to:
+                            print("Engulfed by mapping")
+    #                        source_property, source_from, target_property, target_from, range = seed
+    #                        mapping_from = target_property #'soil'
+    #                        mapping_source_from, mapping_target_from, mapping_range
 
-    else:
-        for seed in seedlist:
-            sourceseed = seed
-            source = getseedproperty(sourceseed, mapping_from)
-            destination = find_mapping(mapping_from, mapping_to, source)
-#           print(mapping_from, source, ' ==>\t ', mapping_to, "\t", destination)
-            addseedproperty(sourceseed, mapping_to, destination)
+                            new_source_property   = source_property #seed ?
+                            new_source_from       = source_from     #as engulfed
+                            new_target_property   = mapping_to      #soil in first instance
+                            new_target_from       = target_from + ( mapping_target_from - mapping_source_from )
+                            new_range             = range
+    #                       seed = ['seed',79,'seed',79,14]
+                            new_item = [new_source_property, new_source_from, new_target_property, new_target_from, new_range]
+                            seedlist[seedlist_index] = new_item
+                            print(new_item)
+                            print(seedlist)
+                            seed = None
+                        else:
+                            print("some overlap 2")
+                    else:
+                        print("Other?!")
+        print("end of mappings what is seed:",seed)
+        if seed:
+            new_source_property   = source_property #seed ?
+            new_source_from       = source_from     #as engulfed
+            new_target_property   = mapping_to      #soil in first instance
+            new_target_from       = target_from     #unchanged
+            new_range             = range
+#                       seed = ['seed',79,'seed',79,14]
+            new_item = [new_source_property, new_source_from, new_target_property, new_target_from, new_range]
+            seedlist[seedlist_index] = new_item
+            print("progressed seedlist:", seedlist)
+            print("end")
+        seedlist_index = seedlist_index + 1
+#            maplist[0]
+#            ['seed-to-soil', 'seed', 'soil', [98, 50, 2], [50, 52, 48]]
+#            destination range start of 50, a source range start of 98, and a range length of 2.
+#            50 98 2
+#        destination = find_mapping(mapping_from, mapping_to, source)
+#            print(mapping_from, source, ' ==> ', mapping_to, destination)
+#           addseedproperty(sourceseed, mapping_to, destination)
+#
+#   else:
+#        for seed in seedlist:
+#            sourceseed = seed
+#            source = getseedproperty(sourceseed, mapping_from)
+#            destination = find_mapping(mapping_from, mapping_to, source)
+#            addseedproperty(sourceseed, mapping_to, destination)
 
 #print ("seedlist ",seedlist) 
 lowestlocation = 99999999999999
 for seed in seedlist:
     sourceseed = seed
     mapping_from = 'location'
-    property = getseedproperty(sourceseed, mapping_from)
-    print(sourceseed, 'location:\t', property)
-    if (property < lowestlocation):
-        lowestlocation = property
+    property = seed[3]
+    print(sourceseed, 'lowest location:\t', property)
+    if property:
+        if (property < lowestlocation):
+            lowestlocation = property
 print("Lowest location:\t", lowestlocation)
 
 
