@@ -1,4 +1,4 @@
-seeds: 79 14 55 13
+seeds: 79 14 55 13 79 1 80 1 81 1 82 1
 
 seed-to-soil map:
 # destination range start of 50, a source range start of 98, and a range length of 2.

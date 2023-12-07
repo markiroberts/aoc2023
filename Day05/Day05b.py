@@ -63,8 +63,9 @@ def addseedproperty(sourceseed, mapping_to, destination):
 
 
 # Get the file handler
-filename = './Day05/example05sh.txt'
-#filename = './Day05/day05.txt'
+#filename = './Day05/example05sh.txt'
+#filename = './Day05/example05.txt'
+filename = './Day05/day05.txt'
 #filename = './Day05/another.txt'
 
 file = open(filename,'r').read().split('\n')
@@ -212,14 +213,17 @@ for processmapping in maplist:
 # seed = ['seed',79,'seed',79,14]
     seedlist_index = 0
     for seed in seedlist:
+# if no overlap do nothing, at end make 1:1 mapping to target property
         source_property, source_from, target_property, target_from, range = seed
         source_to = source_from + range - 1
         target_to = target_from + range - 1
-# if no overlap do nothing, at end make 1:1 mapping to target property
         if ( mapping_from == target_property ):
             for onemapping in thismappings:
                 print ("one mapping: ", onemapping, seed )
                 if seed:
+                    source_property, source_from, target_property, target_from, range = seed
+                    source_to = source_from + range - 1
+                    target_to = target_from + range - 1
                     mapping_source_from, mapping_target_from, mapping_range = onemapping
                     mapping_source_to = mapping_source_from + mapping_range - 1
                     mapping_target_to = mapping_target_from + mapping_range - 1
@@ -227,12 +231,10 @@ for processmapping in maplist:
                     print("property : ", target_from, " - ", target_to, " range ", range)
                     if mapping_source_to < target_from:
                         print("out of range - mapping below target")
-                    if mapping_source_from > target_to:
+                    elif mapping_source_from > target_to:
                         print("out of range - mapping above target")
-                    elif mapping_source_to >= target_from and mapping_source_to <= target_to:
-                        print("some overlap 1")
                     elif mapping_source_to >= target_from and mapping_source_from <= target_to:
-                        if target_from > mapping_source_from and target_to < mapping_source_to:
+                        if target_from >= mapping_source_from and target_to <= mapping_source_to:
                             print("Engulfed by mapping")
     #                       source_property, source_from, target_property, target_from, range = seed
     #                       mapping_from = target_property #'soil'
@@ -249,21 +251,79 @@ for processmapping in maplist:
                             print(seedlist)
                             seed = None
                         else:
-                            print("some overlap 2")
+                            if ( target_from >= mapping_source_from ):
+                                print("some overlap 2")
+        #                       source_property, source_from, target_property, target_from, range = seed
+        #                       mapping_from = target_property #'soil'
+        #                       mapping_source_from, mapping_target_from, mapping_range
+#one mapping:  [25, 18, 70] ['seed', 92, 'water', 94, 3]
+#mapping  :  25  -  94  maps to  18  -  87  range  70
+#property :  94  -  96  range  3
+#some overlap 2
+#['seed', 92, 'light', 87, -4]
+#[['seed', 92, 'water', 94, 3], ['seed', 92, 'light', 87, -4]]
+
+                                new_source_property   = source_property            #seed ?
+                                new_source_from       = source_from               #as engulfed
+                                new_target_property   = mapping_to                 #soil in first instance
+                                new_target_from       = target_from + ( mapping_target_from - mapping_source_from )
+                                new_range             = mapping_source_to - target_from + 1
+        #                       seed = ['seed',79,'seed',79,14]
+                                new_item = [new_source_property, new_source_from, new_target_property, new_target_from, new_range]
+                                seedlist.append(new_item)#[seedlist_index] = new_item
+                                print(new_item)
+                                print(seedlist)
+
+                                update_source_property   = source_property                  #seed ?
+                                update_source_from       = source_from  + new_range      #as engulfed
+                                update_target_property   = mapping_from                     #soil in first instance
+                                update_target_from       = target_from  + new_range
+                                update_range             = range - new_range 
+                                seed[0] = update_source_property
+                                seed[1] = update_source_from
+                                seed[2] = update_target_property
+                                seed[3] = update_target_from
+                                seed[4] = update_range
+                            if ( target_from < mapping_source_from ):
+                                print("some overlap 3")
+                                new_source_property   = source_property            #seed ?
+                                new_source_from       = source_from + ( mapping_source_from - target_from )              #as engulfed
+                                new_target_property   = mapping_to                 #soil in first instance
+                                new_target_from       = mapping_source_from + ( mapping_target_from - mapping_source_from )
+                                new_range             = mapping_source_from - target_from
+        #                       seed = ['seed',79,'seed',79,14]
+                                new_item = [new_source_property, new_source_from, new_target_property, new_target_from, new_range]
+                                seedlist.append(new_item)#[seedlist_index] = new_item
+                                print(new_item)
+                                print(seedlist)
+
+                                update_source_property   = source_property                  #seed ?
+                                update_source_from       = source_from                    #as engulfed
+                                update_target_property   = mapping_from                     #soil in first instance
+                                update_target_from       = target_from 
+                                update_range             = range        - new_range 
+                                seed[0] = update_source_property
+                                seed[1] = update_source_from
+                                seed[2] = update_target_property
+                                seed[3] = update_target_from
+                                seed[4] = update_range
+                    elif mapping_source_to >= target_from and mapping_source_from <= target_to:
+                        print("some overlap 1")
                     else:
                         print("Other?!")
         print("end of mappings what is seed:",seed)
         if seed:
-            new_source_property   = source_property #seed ?
-            new_source_from       = source_from     #as engulfed
+            new_source_property   = seed[0]         #seed ?
+            new_source_from       = seed[1]    #as engulfed
             new_target_property   = mapping_to      #soil in first instance
-            new_target_from       = target_from     #unchanged
-            new_range             = range
+            new_target_from       = seed[3]     #unchanged
+            new_range             = seed[4]
 #                       seed = ['seed',79,'seed',79,14]
             new_item = [new_source_property, new_source_from, new_target_property, new_target_from, new_range]
             seedlist[seedlist_index] = new_item
             print("progressed seedlist:", seedlist)
             print("end")
+        print(".")
         seedlist_index = seedlist_index + 1
 #            maplist[0]
 #            ['seed-to-soil', 'seed', 'soil', [98, 50, 2], [50, 52, 48]]

@@ -1,4 +1,4 @@
-seeds: 13 1
+seeds: 92 1 93 1 94 1 95 1 92 4
 
 seed-to-soil map:
 # destination range start of 50, a source range start of 98, and a range length of 2.
@@ -19,16 +19,3 @@ fertilizer-to-water map:
 water-to-light map:
 88 18 7
 18 25 70
-
-light-to-temperature map:
-45 77 23
-81 45 19
-68 64 13
-
-temperature-to-humidity map:
-0 69 1
-1 0 69
-
-humidity-to-location map:
-60 56 37
-56 93 4
