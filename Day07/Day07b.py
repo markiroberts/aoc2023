@@ -95,7 +95,8 @@ def getcardvalue(e):
    elif e == 'T':
        return 10
    elif e == 'J':
-       return 11
+       #part b Jokers lowest value
+       return 0
    elif e == 'Q':
        return 12
    elif e == 'K':
@@ -128,24 +129,66 @@ def gethandvalue(cards):
                     
 def gethandtype(cards):
     sortedcards = getsortedcards(cards)
+    Jacks = 0
+    if sortedcards[0] == 'J':
+        Jacks = 5
+    elif sortedcards[1] == 'J':
+        Jacks = 4
+    elif sortedcards[2] == 'J':
+        Jacks = 3    
+    elif sortedcards[3] == 'J':
+        Jacks = 2
+    elif sortedcards[4] == 'J':
+        Jacks = 1
+
     if (sortedcards[0] == sortedcards[1] == sortedcards[2] == sortedcards[3] == sortedcards[4]):
         return 'Five of a kind'
-    
+    elif (sortedcards[0] == sortedcards[1] == sortedcards[2] == sortedcards[3] and Jacks == 1):
+        return 'Five of a kind'
+    elif (sortedcards[0] == sortedcards[1] == sortedcards[2] and Jacks == 2):
+        return 'Five of a kind'    
+    elif (sortedcards[0] == sortedcards[1] and Jacks == 3):
+        return 'Five of a kind'
+    elif (Jacks == 4):
+        return 'Five of a kind'
+
     elif (sortedcards[0] == sortedcards[1] == sortedcards[2] == sortedcards[3]):
         return 'Four of a kind'
     elif (sortedcards[1] == sortedcards[2] == sortedcards[3] == sortedcards[4]):
         return 'Four of a kind'
+    elif (sortedcards[1] == sortedcards[2] == sortedcards[3] and Jacks == 1):
+        return 'Four of a kind'    
+    elif (sortedcards[0] == sortedcards[1] == sortedcards[2] and Jacks == 1):
+        return 'Four of a kind'  
+    elif (sortedcards[0] == sortedcards[1] and Jacks == 2):
+        return 'Four of a kind'      
+    elif (sortedcards[1] == sortedcards[2] and Jacks == 2):
+        return 'Four of a kind'  
+    elif (sortedcards[2] == sortedcards[3] and Jacks == 2):
+        return 'Four of a kind'  
+    elif (Jacks == 3):
+        return 'Four of a kind'  
     
-    elif (sortedcards[0] == sortedcards[1] == sortedcards[2] and sortedcards[3] == sortedcards[4] ):
+    elif (sortedcards[0] == sortedcards[1] == sortedcards[2] and                   sortedcards[3] == sortedcards[4] ):
         return 'Full house'
-    elif (sortedcards[0] == sortedcards[1] and sortedcards[2] == sortedcards[3] == sortedcards[4] ):
-        return 'Full house'    
-    
+    elif (sortedcards[0] == sortedcards[1]                   and sortedcards[2] == sortedcards[3] == sortedcards[4] ):
+        return 'Full house'   
+    elif (sortedcards[0] == sortedcards[1]                   and sortedcards[2] == sortedcards[3]                   and Jacks == 1):
+        return 'Full house' 
+
     elif (sortedcards[0] == sortedcards[1] == sortedcards[2]):
         return 'Three of a kind'
     elif (sortedcards[1] == sortedcards[2] == sortedcards[3]):
         return 'Three of a kind'   
     elif (sortedcards[2] == sortedcards[3] == sortedcards[4]):
+        return 'Three of a kind'  
+    elif (sortedcards[0] == sortedcards[1] and Jacks == 1):
+        return 'Three of a kind'  
+    elif (sortedcards[1] == sortedcards[2] and Jacks == 1):
+        return 'Three of a kind'  
+    elif (sortedcards[2] == sortedcards[3] and Jacks == 1):
+        return 'Three of a kind'  
+    elif (Jacks == 2):
         return 'Three of a kind'  
     
     elif (sortedcards[0] == sortedcards[1] and sortedcards[2] == sortedcards[3] ):
@@ -154,7 +197,13 @@ def gethandtype(cards):
         return 'Two pair' 
     elif (sortedcards[1] == sortedcards[2] and sortedcards[3] == sortedcards[4] ):
         return 'Two pair' 
-    
+    elif (sortedcards[0] == sortedcards[1] and Jacks == 1):
+        return 'Two pair' 
+    elif (sortedcards[1] == sortedcards[2] and Jacks == 1):
+        return 'Two pair' 
+    elif (sortedcards[2] == sortedcards[3] and Jacks == 1):
+        return 'Two pair' 
+            
     elif (sortedcards[0] == sortedcards[1]):
         return 'One pair'
     elif (sortedcards[1] == sortedcards[2]):
@@ -163,6 +212,9 @@ def gethandtype(cards):
         return 'One pair'   
     elif (sortedcards[3] == sortedcards[4]):
         return 'One pair'       
+    elif (Jacks == 1):
+        return 'One pair'
+
     else:
         return 'High card'
 
@@ -235,6 +287,51 @@ for handbed in handbetlist:
     handtype = gethandtype(cards)
     handvalue = gethandvalue(cards)
     print(cards, handtype, handvalue)
+
+cards = '11111'
+handtype = gethandtype(cards)
+handvalue = gethandvalue(cards)
+print(cards, handtype, handvalue)
+
+cards = '11J22'
+handtype = gethandtype(cards)
+handvalue = gethandvalue(cards)
+print(cards, handtype, handvalue)
+
+cards = '11J11'
+handtype = gethandtype(cards)
+handvalue = gethandvalue(cards)
+print(cards, handtype, handvalue)
+
+cards = '1JJ11'
+handtype = gethandtype(cards)
+handvalue = gethandvalue(cards)
+print(cards, handtype, handvalue)
+
+cards = '21JJJ'
+handtype = gethandtype(cards)
+handvalue = gethandvalue(cards)
+print(cards, handtype, handvalue)
+
+cards = 'J1JJJ'
+handtype = gethandtype(cards)
+handvalue = gethandvalue(cards)
+print(cards, handtype, handvalue)
+
+cards = '11J23'
+handtype = gethandtype(cards)
+handvalue = gethandvalue(cards)
+print(cards, handtype, handvalue)
+
+cards = '41J21'
+handtype = gethandtype(cards)
+handvalue = gethandvalue(cards)
+print(cards, handtype, handvalue)
+
+cards = 'J3423'
+handtype = gethandtype(cards)
+handvalue = gethandvalue(cards)
+print(cards, handtype, handvalue)
 
 handbetlist.sort(key=gethandvalue_cardsbet)
 
