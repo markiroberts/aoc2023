@@ -1,0 +1,11 @@
+seeds: 13 1
+
+seed-to-soil map:
+# destination range start of 50, a source range start of 98, and a range length of 2.
+50 98 2
+52 50 48
+
+soil-to-fertilizer map:
+0 15 37
+37 52 2
+39 0 15

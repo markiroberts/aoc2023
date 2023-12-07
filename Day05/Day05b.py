@@ -63,7 +63,7 @@ def addseedproperty(sourceseed, mapping_to, destination):
 
 
 # Get the file handler
-filename = './Day05/example05.txt'
+filename = './Day05/example05sh.txt'
 #filename = './Day05/day05.txt'
 #filename = './Day05/another.txt'
 
@@ -234,10 +234,9 @@ for processmapping in maplist:
                     elif mapping_source_to >= target_from and mapping_source_from <= target_to:
                         if target_from > mapping_source_from and target_to < mapping_source_to:
                             print("Engulfed by mapping")
-    #                        source_property, source_from, target_property, target_from, range = seed
-    #                        mapping_from = target_property #'soil'
-    #                        mapping_source_from, mapping_target_from, mapping_range
-
+    #                       source_property, source_from, target_property, target_from, range = seed
+    #                       mapping_from = target_property #'soil'
+    #                       mapping_source_from, mapping_target_from, mapping_range
                             new_source_property   = source_property #seed ?
                             new_source_from       = source_from     #as engulfed
                             new_target_property   = mapping_to      #soil in first instance
