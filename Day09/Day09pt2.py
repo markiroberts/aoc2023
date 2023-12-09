@@ -188,8 +188,8 @@ def allzero(valuelist):
     return True
 
 # Get the file handler
-#filename = './Day09/example09.txt'
-filename = './Day09/day09.txt'
+filename = './Day09/example09.txt'
+#filename = './Day09/day09.txt'
 
 file = open(filename,'r').read().split('\n')
 
@@ -264,7 +264,8 @@ for x in sequencelist:
         revised = original[steps - step - 1]
 #        print("Revised:", revised)
         if (step == 0):
-            revised.append(0)
+            zerolist = [0]
+            revised = zerolist.append(revised)
         else:
             deltas = original[steps - step]
             lastdelta = deltas[len(deltas)-1]
