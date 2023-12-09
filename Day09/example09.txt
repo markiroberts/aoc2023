@@ -1,0 +1,25 @@
+#LR order LLR means Left Left Right then repeat
+RL
+
+#next node LR
+AAA = (BBB, CCC)
+BBB = (DDD, EEE)
+CCC = (ZZZ, GGG)
+DDD = (DDD, DDD)
+EEE = (EEE, EEE)
+GGG = (GGG, GGG)
+ZZZ = (ZZZ, ZZZ)
+
+#step 1
+#first order is 'R'
+#first node is 'AAA'
+#first directions for node BBB, CCC
+#so next node is CCC
+#
+#step 2
+#order is 'L'
+#node is 'CCC'
+#directions for node ZZZ, GGG
+#so next node is ZZZ
+#
+#reached goal after 2 steps
