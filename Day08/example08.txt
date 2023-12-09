@@ -1,0 +1,37 @@
+#hand bet
+32T3K 765
+T55J5 684
+KK677 28
+KTJJT 220
+QQQJA 483
+#card order:
+#A 14
+#K 13
+#Q 12
+#J 11
+#T 10
+#9 
+#8
+#7
+#6
+#5
+#4
+#3
+#2
+#hand order
+#hand type     
+#Five of a kind    7
+#Four of a kind    6
+#Full house xxxYYY 5
+#Three of a kind   4
+#Two pair AAxxc    3
+#One pair AAxyz    2
+#High card abcde   1
+#if hand type match then
+#card value in order
+#Then by order of cards and value (don't sort by value first)
+#54321 beats #1A234 as value 5 > 1 despite A > 5
+#winning = bet * rank (1 is the lowest rank i.e. worst hand)
+#type 5 of a kind = 7
+#hand value = 'type' * 1,000,000,000 + card 5 * + (card 4 * 100) + (card 3 * 10,000) + (card 2 * 1,000,000) + (card 1 * 100,000,000) 
+#then sort by hand value
