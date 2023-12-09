@@ -170,12 +170,26 @@ def getnode(nodeid):
     for possiblenode in nodelist:
         if possiblenode[0] == nodeid:
             return possiblenode
+        
 
+def getdelta(valuelist):
+    deltalist = []
+    for x in range(len(valuelist) - 1):
+        value0 = valuelist[x]
+        value1 = valuelist[x+1]
+        delta = value1 - value0
+        deltalist.append(delta)
+    return (deltalist)
 
+def allzero(valuelist):
+    for x in valuelist:
+        if x != 0:
+            return False
+    return True
 
 # Get the file handler
-#filename = './Day08/example08b.txt'
-filename = './Day08/day08.txt'
+filename = './Day09/example09.txt'
+#filename = './Day08/day08.txt'
 #filename = './Day08/another.txt'
 
 file = open(filename,'r').read().split('\n')
@@ -215,8 +229,7 @@ handbetlist = []
 
 #order
 #LR
-order = []
-nodelist = []
+sequencelist = []
 for line in array:
 #    splitline = re.split(r'[(+*@)&=.#-/]', line)
 #    splitline = re.split( r'[(.=*$#+%/@)-]', line)
@@ -225,40 +238,43 @@ for line in array:
         continue
     elif line[0] == '#':
         continue
-    elif len(order) == 0:
-#LLR
-        order = line
+    elif len(line) == 0:
+        continue
     else:
-#AAA = (BBB, CCC)
-        before_equals = line.split(" = (",1)[0].strip()
-        after_equals =  line.split(" = (",1)[1].strip()
-        first_direction = after_equals.split(",")[0]
-        second_direction = after_equals.split(",")[1].split(")")[0].strip()
-        directions = { "L": first_direction, "R": second_direction }
-        item = [before_equals, directions]
-        nodelist.append(item)
+        sequence = line.split()
+        item = []
+        for digit in sequence:
+            item.append(int(digit))
+        sequencelist.append(item)
 
-print("order")
-print(order)
+print(sequencelist)
+step = 0
+sumlastdigits = 0
+for x in sequencelist:
+    original = []
+    while (allzero(x) == False):
+        original.append(x)
+        y = getdelta(x)
+        x = y
+        if allzero(x):
+            original.append(x)
+    print("original", original[0])
 
-print("Nodes")
-for node in nodelist:
-    print(node[0], node[1])
+    steps = len(original)
+    for step in range(steps):
+        revised = original[steps - step - 1]
+#        print("Revised:", revised)
+        if (step == 0):
+            revised.append(0)
+        else:
+            deltas = original[steps - step]
+            lastdelta = deltas[len(deltas)-1]
+            lastrevised = revised[len(revised)-1]
+            newrevised = lastrevised + lastdelta
+            revised.append(newrevised)
 
-steps = 0
-nodeid = 'AAA'
-while nodeid != 'ZZZ' and steps < 999999:
-#first order is 'R'
-#first node is 'AAA'
-#first directions for node BBB, CCC
-#so next node is CCC
-    orderid = order[steps % len(order)]
-    node = getnode(nodeid)
-    nextnodeid = node[1][orderid]
-    print ("Orderid: ", orderid, "Node", node, "Nextnodeid", nextnodeid)
-    nodeid = nextnodeid
-    steps = steps + 1
-    print (steps)
+    lastdigit = revised[len(revised)-1]
+    print("revised:", revised, "last digit:", lastdigit)
+    sumlastdigits = sumlastdigits + lastdigit
 
-print("Steps:", steps)
- 
+print("Sum of last digits: ", sumlastdigits)
