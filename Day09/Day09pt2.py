@@ -188,8 +188,8 @@ def allzero(valuelist):
     return True
 
 # Get the file handler
-filename = './Day09/example09.txt'
-#filename = './Day09/day09.txt'
+#filename = './Day09/example09.txt'
+filename = './Day09/day09.txt'
 
 file = open(filename,'r').read().split('\n')
 
@@ -249,6 +249,7 @@ for line in array:
 print(sequencelist)
 step = 0
 sumlastdigits = 0
+sumfirstdigits = 0
 for x in sequencelist:
     original = []
     while (allzero(x) == False):
@@ -264,17 +265,21 @@ for x in sequencelist:
         revised = original[steps - step - 1]
 #        print("Revised:", revised)
         if (step == 0):
-            zerolist = [0]
-            revised = zerolist.append(revised)
+            revised = [0] + revised
+            original[steps - step - 1] = revised
         else:
             deltas = original[steps - step]
-            lastdelta = deltas[len(deltas)-1]
-            lastrevised = revised[len(revised)-1]
-            newrevised = lastrevised + lastdelta
-            revised.append(newrevised)
+            firstdelta = deltas[0]
+            firstrevised = revised[0]
+            newrevised = firstrevised - firstdelta
+            revised = [newrevised] + revised
+            original[steps - step - 1] = revised
 
     lastdigit = revised[len(revised)-1]
-    print("revised:", revised, "last digit:", lastdigit)
-    sumlastdigits = sumlastdigits + lastdigit
+    firstdigit = revised[0]
+    print("revised:", revised, "last digit:", lastdigit, "firstdigit", firstdigit)
+    sumlastdigits  = sumlastdigits + lastdigit
+    sumfirstdigits = sumfirstdigits + firstdigit
 
 print("Sum of last digits: ", sumlastdigits)
+print("Sum of first digits: ", sumfirstdigits)
