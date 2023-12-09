@@ -170,12 +170,18 @@ def getnode(nodeid):
     for possiblenode in nodelist:
         if possiblenode[0] == nodeid:
             return possiblenode
-
-
+        
+def ghoststartnodeids():
+    nodes = []
+    for possiblenode in nodelist:
+        if possiblenode[0][2] == 'A':
+            nodes.append(possiblenode[0])
+    return(nodes)
 
 # Get the file handler
-#filename = './Day08/example08b.txt'
+#filename = './Day08/example08pt2.txt'
 filename = './Day08/day08.txt'
+#filename = './Day08/example08b.txt'
 #filename = './Day08/another.txt'
 
 file = open(filename,'r').read().split('\n')
@@ -246,19 +252,64 @@ for node in nodelist:
     print(node[0], node[1])
 
 steps = 0
-nodeid = 'AAA'
-while nodeid != 'ZZZ' and steps < 999999:
+foundzs = 0
+print (ghoststartnodeids())
+ghostnodeids = ghoststartnodeids()[3:6]
+allghostnodeidsendinZ = False
+firstzindex = []
+zlist = []
+for ghostindex in range(len(ghostnodeids)):
+    firstzindex.append(0)
+
+maxsteps = 100000000
+print("Ghost count: ", len(ghostnodeids))
+print("Ghost Starts", ghostnodeids)
+showsteps = 10
+while allghostnodeidsendinZ == False and steps < maxsteps and foundzs < 100:
+#while steps < maxsteps:
 #first order is 'R'
 #first node is 'AAA'
 #first directions for node BBB, CCC
 #so next node is CCC
     orderid = order[steps % len(order)]
-    node = getnode(nodeid)
-    nextnodeid = node[1][orderid]
-    print ("Orderid: ", orderid, "Node", node, "Nextnodeid", nextnodeid)
-    nodeid = nextnodeid
-    steps = steps + 1
-    print (steps)
+    if (steps % ( maxsteps / 2000) == 0) or showsteps > 0:
+        print("Steps:", steps+1, "Orderid:", orderid)
+        for ghostindex in range(len(ghostnodeids)):
+            ghostnodeid = ghostnodeids[ghostindex]
+            node = getnode(ghostnodeid)
+            nextnodeid = node[1][orderid]
+            print ("Ghost: ", ghostindex, "Node", node, "NextNodeId", nextnodeid )
+    
+    allghostnodeidsendinZ = False
+    countghostnodeidsendinZ = 0
 
-print("Steps:", steps)
- 
+    for ghostindex in range(len(ghostnodeids)):
+        ghostnodeid = ghostnodeids[ghostindex]
+        node = getnode(ghostnodeid)
+        nextnodeid = node[1][orderid]
+        ghostnodeids[ghostindex] = nextnodeid
+
+    countghostnodeidsendinZ = 0
+    for ghostindex in range(len(ghostnodeids)):
+            if ghostnodeids[ghostindex][2] == 'Z':
+                countghostnodeidsendinZ = countghostnodeidsendinZ + 1
+                foundzs = foundzs + 1
+                showsteps = 3
+                item = [ghostindex, ghostnodeids[ghostindex], steps + 1]
+                zlist.append(item)
+
+    if countghostnodeidsendinZ == len(ghostnodeids):
+        allghostnodeidsendinZ = True
+
+    steps = steps + 1
+    showsteps = showsteps - 1 
+
+    if countghostnodeidsendinZ > 0: 
+        print ("steps", steps, "countZs", countghostnodeidsendinZ)
+        print ("zlist", zlist)
+
+print ("steps", steps, "countZs", countghostnodeidsendinZ)
+zlist.sort()
+print("Zlist:")
+for x in zlist:
+    print (x)
