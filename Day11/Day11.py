@@ -74,22 +74,34 @@ for y in range(height):
     print (array[y], rowEmpty(y))
 
 print (universelist.list)
+print ("Expand universe")
 
 for y in reversed(range(height)):
     if (rowEmpty(y)):
+        height = height + 1
         for universe in universelist.list:
             if universe[1] > y:
                 universe[1] = universe[1] + 1
-
-print (universelist.list)
-
-for x in reversed(range(width)):
-    print(x,columnEmpty(x))
+        line = array [height-2]
+        array.append(line) 
+        for ymove in reversed(range(y,height-1)):
+            array[ymove] = array[ymove-1]
+        array[y] = array[y+1]
 
 for x in reversed(range(width)):
     if (columnEmpty(x)):
         for universe in universelist.list:
             if universe[0] > x:
                 universe[0] = universe[0] + 1
+        for y in range(height):
+            lineleft = array[y][:x] 
+            lineright = array[y][x:]      
+            line = lineleft + "." + lineright
+            array[y] = line
+
+for y in range(height):
+    print (array[y], rowEmpty(y))
+
 print (universelist.list)
+ 
 
