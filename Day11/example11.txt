@@ -1,5 +1,5 @@
-# universe
-# find the empty rows and columns and double the size of those
+' universe
+' find the empty rows and columns and double the size of those
 ...#......
 .......#..
 #.........
@@ -10,5 +10,5 @@
 ..........
 .......#..
 #...#.....
-# find the distance between universes in this expanded universe
-# fund sum of these distances, only count each pair once
+' find the distance between universes in this expanded universe
+' fund sum of these distances, only count each pair once
